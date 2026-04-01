@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: Home(),
-    debugShowCheckedModeBanner: false,
-    ));
+  runApp(MaterialApp(home: Home(), debugShowCheckedModeBanner: false));
 }
 
 class Home extends StatefulWidget {
@@ -13,54 +10,50 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   TextEditingController _controllerAlcool = TextEditingController();
   TextEditingController _controllerGasolina = TextEditingController();
   String _resultado = "Informe os valores";
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _limparCampos() {
     _controllerAlcool.text = "";
     _controllerGasolina.text = "";
     setState(() {
-        _resultado = "Informe os valores";  
+      _resultado = "Informe os valores";
     });
   }
 
   void _calcular() {
-    double precoAlcool = double.parse(_controllerAlcool.text.replaceAll(',', '.'));
-    double precoGasolina = double.parse(_controllerGasolina.text.replaceAll(',', '.'));
-    double proporcao = precoAlcool / precoGasolina; 
+    double precoAlcool = double.parse(
+      _controllerAlcool.text.replaceAll(',', '.'),
+    );
+    double precoGasolina = double.parse(
+      _controllerGasolina.text.replaceAll(',', '.'),
+    );
+    double proporcao = precoAlcool / precoGasolina;
 
-    _resultado = (proporcao < 0.7) ? "Melhor utilizar Álcool" : "Melhor utilizar Gasolina"; 
-    setState(() {
-      
-    });
+    _resultado = (proporcao < 0.7)
+        ? "Melhor utilizar Álcool!"
+        : "Melhor utilizar Gasolina!";
+    setState(() {});
 
-
-
-    
-    
     //if (proporcao < 0.7) {
-      
-      //  _resultado = "Melhor utilizar Gasolina";
-      
+
+    //  _resultado = "Melhor utilizar Gasolina";
+
     //} else {
-      
-      //  _resultado = "Melhor utilizar Álcool";
-      
+
+    //  _resultado = "Melhor utilizar Álcool";
+
     //}
-
-  }   
-
-
-
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Álcool ou Gasolina",
+          "Álcool ou Gasolina?",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -78,6 +71,7 @@ class _HomeState extends State<Home> {
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
         child: Form(
+          key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -90,6 +84,12 @@ class _HomeState extends State<Home> {
                 controller: _controllerAlcool,
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return "Informe o valor do Álcool!";
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   labelText: "Valor do Álcool",
                   labelStyle: TextStyle(color: Colors.lightBlue[900]),
@@ -100,6 +100,12 @@ class _HomeState extends State<Home> {
                 controller: _controllerGasolina,
                 textAlign: TextAlign.center,
                 keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return "Informe o valor da Gasolina!";
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   labelText: "Valor do Gasolina",
                   labelStyle: TextStyle(color: Colors.lightBlue[900]),
@@ -115,7 +121,9 @@ class _HomeState extends State<Home> {
                       backgroundColor: Colors.lightBlue[900],
                     ),
                     onPressed: () {
-                      _calcular();
+                      if (_formKey.currentState!.validate()) {
+                        _calcular();
+                      }
                     },
                     child: Text(
                       "Calcular",
@@ -127,10 +135,7 @@ class _HomeState extends State<Home> {
               Text(
                 _resultado,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.lightBlue[900], 
-                  fontSize: 25.0
-                  ),
+                style: TextStyle(color: Colors.lightBlue[900], fontSize: 25.0),
               ),
             ],
           ),
