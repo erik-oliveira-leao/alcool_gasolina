@@ -20,6 +20,7 @@ class _HomeState extends State<Home> {
     _controllerGasolina.text = "";
     setState(() {
       _resultado = "Informe os valores";
+      _formKey = GlobalKey<FormState>();
     });
   }
 
