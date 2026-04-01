@@ -32,4 +32,6 @@ Please choose one (or "q" to quit): <br>
 
 ![Texto Alternativo](img/device2.png)
 
-Depois escolher qual api vai ser utilizada, ou criar um novo android emulador
+- Depois escolher qual api vai ser utilizada, ou criar um novo android emulador<br>
+
+![Texto Alternativo](img/device3.png)
